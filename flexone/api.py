@@ -40,65 +40,65 @@ def import_arabic_translation():
 
 
 def configure_app():
-    disable_registration()
-    disable_marketplace()
-    configure_email()
-    configure_systemsettings()
-    
+	disable_registration()
+	disable_marketplace()
+	configure_email()
+	configure_systemsettings()
+	
 
 def configure_domain():
-    try:
-        email_account = frappe.new_doc("Email Domain")
-        email_account.email_server = "imap.gmail.com"
-        email_account.email_id = "notifications@flexsofts.com"
-        email_account.domain_name = "flexsofts.com"
-        email_account.smtp_server = "smtp.mailgun.org"
-        email_account.smtp_port = int("587")
-        email_account.use_imap = int(1)
-        email_account.use_ssl = int(1)
-        email_account.tls = int(1)
-        email_account.attachment_limit = int(1)
-        email_account.save()
+	try:
+		email_account = frappe.new_doc("Email Domain")
+		email_account.email_server = "imap.gmail.com"
+		email_account.email_id = "notifications@flexsofts.com"
+		email_account.domain_name = "flexsofts.com"
+		email_account.smtp_server = "smtp.mailgun.org"
+		email_account.smtp_port = int("587")
+		email_account.use_imap = int(1)
+		email_account.use_ssl = int(1)
+		email_account.tls = int(1)
+		email_account.attachment_limit = int(1)
+		email_account.save()
 	except frappe.DuplicateEntryError:
 		frappe.clear_messages()        
 
 def configure_account():
-    try:
-        email_account = frappe.get_doc("Email Account","Notifications")
-        email_account.email_account_name = "Notifications"
-        email_account.email_id ="notifications@flexsofts.com"
-        email_account.email_server = "imap.gmail.com"
-        email_account.enable_outgoing = 1
-        email_account.enable_incoming = 0
-        email_account.default_outgoing = 1
-        email_account.login_id_is_different = 1
-        email_account.login_id = "postmaster@mg.flexsofts.com"
-        email_account.smtp_port = 587
-        email_account.password = "39a65b2f680bc2e71fc2d5a56c7feb44-80bfc9ce-520217db"
-        email_account.domain = "flexsofts.com"
-        email_account.email_sync_option = "UNSEEN"
-        email_account.smtp_server = "smtp.mailgun.org"
-        email_account.use_imap = 1
-        email_account.use_tls = 1
-        email_account.use_ssl = 1
-        email_account.save()
+	try:
+		email_account = frappe.get_doc("Email Account","Notifications")
+		email_account.email_account_name = "Notifications"
+		email_account.email_id ="notifications@flexsofts.com"
+		email_account.email_server = "imap.gmail.com"
+		email_account.enable_outgoing = 1
+		email_account.enable_incoming = 0
+		email_account.default_outgoing = 1
+		email_account.login_id_is_different = 1
+		email_account.login_id = "postmaster@mg.flexsofts.com"
+		email_account.smtp_port = 587
+		email_account.password = "39a65b2f680bc2e71fc2d5a56c7feb44-80bfc9ce-520217db"
+		email_account.domain = "flexsofts.com"
+		email_account.email_sync_option = "UNSEEN"
+		email_account.smtp_server = "smtp.mailgun.org"
+		email_account.use_imap = 1
+		email_account.use_tls = 1
+		email_account.use_ssl = 1
+		email_account.save()
 	except frappe.DuplicateEntryError:
 		frappe.clear_messages()        
 
 def configure_email():
-    configure_domain()
-    configure_account()
+	configure_domain()
+	configure_account()
 
 
 def disable_registration():
-    doc = frappe.get_doc("Website Settings")
-    doc.disable_signup = int(1)
-    doc.save()
+	doc = frappe.get_doc("Website Settings")
+	doc.disable_signup = int(1)
+	doc.save()
 
 def disable_marketplace():
-    doc = frappe.get_doc("Marketplace Settings")
-    doc.disable_marketplace = int(1)
-    doc.save()
+	doc = frappe.get_doc("Marketplace Settings")
+	doc.disable_marketplace = int(1)
+	doc.save()
 
 def configure_systemsettings():
 	gdoc = frappe.get_doc("Global Defaults")
