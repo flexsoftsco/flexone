@@ -13,7 +13,7 @@ def import_arabic_translation():
 	configure_app()
 	frappe.db.sql('delete from `tabTranslation`')
 	# from frappe.core.doctype.data_import.data_import import import_file_by_path
-	frappe.core.doctype.data_import.data_import import import_file
+	from frappe.core.doctype.data_import.data_import import import_file
 	import_file(doctype='Translation', file_path=frappe.utils.get_bench_path()+'/apps/flexone/flexone/public/translation/Translation.csv', import_type="Insert", submit_after_import=False, console=False)
 	# import_file(path=frappe.utils.get_bench_path()+'/apps/flexone/flexone/public/translation/Translation.csv',ignore_links=False, overwrite=True,submit=False, pre_process=None, no_email=True)
 
