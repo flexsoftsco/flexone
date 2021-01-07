@@ -36,5 +36,16 @@ def get_data():
 					"hide_count": False
 				}
 			]
-		}
+		},
+		{
+			"label": _("Reports"),
+			"items": [
+				{
+					"type": "report",
+					"name": "General Ledger Middle East",
+					"is_query_report": True,
+					"doctype": "GL Entry"
+				}
+			]
+		}		
     ]
