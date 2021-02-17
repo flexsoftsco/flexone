@@ -34,8 +34,8 @@ app_license = "MIT"
 # Home Pages
 # ----------
 website_context = {
-	"favicon": 	"/assets/flexone/images/icon.png",
-	"splash_image": "/assets/flexone/images/logo.jpg"
+    "favicon": "/assets/flexone/images/icon.png",
+    "splash_image": "/assets/flexone/images/logo.jpg",
 }
 
 # application home page (will override Website Settings)
@@ -43,7 +43,7 @@ website_context = {
 after_install = "flexone.api.import_arabic_translation"
 # website user home page (by Role)
 # role_home_page = {
-#	"Role": "home_page"
+# 	"Role": "home_page"
 # }
 
 # Website user home page (by function)
@@ -60,6 +60,7 @@ after_install = "flexone.api.import_arabic_translation"
 
 # before_install = "flexone.install.before_install"
 # after_install = "flexone.install.after_install"
+after_migrate = "flexone.after_migrate"
 
 # Desk Notifications
 # ------------------
@@ -83,13 +84,14 @@ after_install = "flexone.api.import_arabic_translation"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+    "Sales Invoice": {"on_submit": "flexone.on_submit_sales_invoice"}
+    # 	"*": {
+    # 		"on_update": "method",
+    # 		"on_cancel": "method",
+    # 		"on_trash": "method"
+    # 	}
+}
 
 # Scheduled Tasks
 # ---------------
@@ -130,4 +132,3 @@ after_install = "flexone.api.import_arabic_translation"
 # override_doctype_dashboards = {
 # 	"Task": "flexone.task.get_dashboard_data"
 # }
-
