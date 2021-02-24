@@ -53,4 +53,4 @@ def on_submit_sales_invoice(doc, method):
         accounts_receivable_summary_cf = frappe.render_template(
             template, dict(summary=summary, doc=doc)
         )
-        doc.accounts_receivable_summary_cf = accounts_receivable_summary_cf
+        doc.db_set("accounts_receivable_summary_cf", accounts_receivable_summary_cf)
