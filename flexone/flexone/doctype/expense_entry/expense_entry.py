@@ -11,6 +11,34 @@ from erpnext.accounts.general_ledger import make_gl_entries
 from erpnext.controllers.accounts_controller import AccountsController
 
 class ExpenseEntry(AccountsController):
+
+	def add_vat(self):
+		default_vat_tax_account = frappe.db.get_value('Company', self.company, 'default_vat_tax_account_cf')
+		tax_rate=frappe.db.get_value('Account', default_vat_tax_account, 'tax_rate')
+
+		new_expenses_entry_detail=[]
+		for d in self.get('expenses_entry_detail'):
+			new_expenses_entry_detail.append(d)
+			if d.apply_vat==1:
+				new_expenses_entry_detail.append({
+					"expense_account":default_vat_tax_account,
+					"account_type":"tax",
+					"cost_center":d.cost_center,
+					"amount":(tax_rate/100.0)*d.amount,
+					"expense_remarks": "VAT for  {0} amt {1}".format(d.expense_account,d.amount),
+				})
+
+		self.expenses_entry_detail=[]
+
+		for d in new_expenses_entry_detail:
+			self.append('expenses_entry_detail',{
+				"expense_account":d.get('expense_account'),
+				"account_type":d.get('account_type'),
+				"cost_center":d.get('cost_center'),
+				"amount":d.get('amount'),
+				"expense_remarks": d.get('expense_remarks'),
+			})
+
 	def validate(self):
 		self.validate_empty_accounts_table()
 		self.calculate_total_amount()
