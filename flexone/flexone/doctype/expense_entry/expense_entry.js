@@ -29,6 +29,12 @@ frappe.ui.form.on('Expense Entry', {
 			frm.set_df_property("mode_of_payment", "reqd", 1);
 			frm.set_df_property("paid_from_account", "reqd", 1);
 		}
+		if (frm.doc.expense_type == 'Employee Petty Cash') {
+			frm.set_value('party_type', 'Employee');
+			frm.set_df_property("party", "reqd", 1);
+			frm.set_df_property("mode_of_payment", "reqd", 0);
+			frm.set_df_property("paid_from_account", "reqd", 0);			
+		}			
 	},
 	onload_post_render:async function (frm) {
 
@@ -47,7 +53,15 @@ frappe.ui.form.on('Expense Entry', {
 			frm.set_df_property("party", "reqd", 0);
 			frm.set_df_property("mode_of_payment", "reqd", 1);
 			frm.set_df_property("paid_from_account", "reqd", 1);
-		}		
+		}	
+		else if (frm.doc.expense_type == 'Employee Petty Cash') {
+			frm.set_value('party_type', 'Employee');
+			frm.set_df_property("party", "reqd", 1);
+			frm.set_df_property("mode_of_payment", "reqd", 0);
+			frm.set_df_property("paid_from_account", "reqd", 0);			
+			let default_payable_account = (await frappe.db.get_value("Company", frm.doc.company, "default_employee_petty_cash_payable_account_cf")).message.default_employee_petty_cash_payable_account_cf;
+			frm.set_value('payable_account', default_payable_account)			
+		}				
 
 	},
 	expense_type: async function (frm) {
@@ -67,7 +81,39 @@ frappe.ui.form.on('Expense Entry', {
 			frm.set_df_property("mode_of_payment", "reqd", 1);
 			frm.set_df_property("paid_from_account", "reqd", 1);
 		}
+		else if (frm.doc.expense_type == 'Employee Petty Cash') {
+			frm.set_value('party_type', 'Employee');
+			frm.set_df_property("party", "reqd", 1);
+			frm.set_df_property("mode_of_payment", "reqd", 0);
+			frm.set_df_property("paid_from_account", "reqd", 0);			
+			let default_payable_account = (await frappe.db.get_value("Company", frm.doc.company, "default_employee_petty_cash_payable_account_cf")).message.default_employee_petty_cash_payable_account_cf;
+			frm.set_value('payable_account', default_payable_account)			
+		}		
 	},
+	validate: function (frm) {
+		for(var i=0;i<=frm.doc.expenses_entry_detail.length-1;i++){
+			if (frm.doc.expenses_entry_detail[i].account_type=='Tax'){
+	
+				if (!frm.doc.expenses_entry_detail[i].supplier && !frm.doc.expenses_entry_detail[i].supplier_name && !frm.doc.expenses_entry_detail[i].supplier_tax_id){
+					frappe.throw({message:__("Please enter Supplier, Supplier Name, Supplier Tax ID for row #")+(i+1), 
+					title: __("Mandatory Supplier Details.")});
+				}				
+				else if (!frm.doc.expenses_entry_detail[i].supplier){
+					frappe.throw({message:__("Please enter Supplier for row #")+(i+1), 
+					title: __("Mandatory Supplier Details.")});
+				}				
+				else if (!frm.doc.expenses_entry_detail[i].supplier_name){
+					frappe.throw({message:__("Please enter Supplier Name for row #")+(i+1), 
+					title: __("Mandatory Supplier Details.")});
+				}
+				else if (!frm.doc.expenses_entry_detail[i].supplier_tax_id){
+					frappe.throw({message:__("Please enter Supplier Tax ID for row #")+(i+1), 
+					title: __("Mandatory Supplier Details.")});
+				}								
+
+			}
+		}
+	},	
 	refresh: function (frm) {
 		if (frm.doc.docstatus == 1) {
 			frm.add_custom_button(__('View Accounting Ledger'), function () {

@@ -10,7 +10,10 @@
   "amount",
   "expense_remarks",
   "column_break_4",
-  "apply_vat"
+  "apply_vat",
+  "supplier",
+  "supplier_name",
+  "supplier_tax_id"
  ],
  "fields": [
   {
@@ -32,7 +35,7 @@
    "reqd": 1
   },
   {
-   "columns": 4,
+   "columns": 2,
    "fieldname": "expense_remarks",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -64,10 +67,32 @@
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "VAT"
+  },
+  {
+   "columns": 2,
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fetch_from": "supplier.supplier_name",
+   "fetch_if_empty": 1,
+   "fieldname": "supplier_name",
+   "fieldtype": "Data",
+   "label": "Supplier Name"
+  },
+  {
+   "fetch_from": "supplier.tax_id",
+   "fetch_if_empty": 1,
+   "fieldname": "supplier_tax_id",
+   "fieldtype": "Data",
+   "label": "Supplier Tax ID"
   }
  ],
  "istable": 1,
- "modified": "2021-11-12 14:30:34.557065",
+ "modified": "2021-11-13 16:56:43.819422",
  "modified_by": "Administrator",
  "module": "Flexone",
  "name": "Expenses Entry Detail",

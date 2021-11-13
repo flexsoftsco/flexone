@@ -52,7 +52,7 @@
    "fieldname": "expense_type",
    "fieldtype": "Select",
    "label": "Expense Type",
-   "options": "Cash\nCredit"
+   "options": "Cash\nCredit\nEmployee Petty Cash"
   },
   {
    "depends_on": "eval:doc.expense_type==\"Cash\"",
@@ -70,7 +70,7 @@
    "options": "Account"
   },
   {
-   "depends_on": "eval:doc.expense_type==\"Credit\"",
+   "depends_on": "eval:(doc.expense_type==\"Credit\" || doc.expense_type==\"Employee Petty Cash\")",
    "fieldname": "party_type",
    "fieldtype": "Link",
    "label": "Party Type",
@@ -78,14 +78,14 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval:doc.expense_type==\"Credit\"",
+   "depends_on": "eval:(doc.expense_type==\"Credit\" || doc.expense_type==\"Employee Petty Cash\")",
    "fieldname": "party",
    "fieldtype": "Dynamic Link",
    "label": "Party",
    "options": "party_type"
   },
   {
-   "depends_on": "eval:doc.expense_type==\"Credit\"",
+   "depends_on": "eval:(doc.expense_type==\"Credit\" || doc.expense_type==\"Employee Petty Cash\")",
    "fieldname": "payable_account",
    "fieldtype": "Link",
    "label": "Payable Account",
@@ -195,7 +195,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2021-11-12 14:01:13.057077",
+ "modified": "2021-11-13 17:02:34.220967",
  "modified_by": "Administrator",
  "module": "Flexone",
  "name": "Expense Entry",

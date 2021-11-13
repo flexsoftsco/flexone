@@ -26,6 +26,9 @@ class ExpenseEntry(AccountsController):
 					"cost_center":d.cost_center,
 					"amount":(tax_rate/100.0)*d.amount,
 					"expense_remarks": "VAT for  {0} amt {1}".format(d.expense_account,d.amount),
+					"supplier":d.supplier,
+					"supplier_name":d.supplier_name,
+					"supplier_tax_id":d.supplier_tax_id					
 				})
 
 		self.expenses_entry_detail=[]
@@ -37,6 +40,9 @@ class ExpenseEntry(AccountsController):
 				"cost_center":d.get('cost_center'),
 				"amount":d.get('amount'),
 				"expense_remarks": d.get('expense_remarks'),
+				"supplier":d.get('supplier'),
+				"supplier_name":d.get('supplier_name'),
+				"supplier_tax_id":d.get('supplier_tax_id')				
 			})
 
 	def validate(self):
@@ -79,10 +85,14 @@ class ExpenseEntry(AccountsController):
 		if self.expense_type=='Cash':
 			gl_entries = self.get_gl_entries()
 			make_gl_entries(gl_entries, cancel)
+		
 		elif self.expense_type=='Credit':
-
 			gl_entries_for_credit = self.get_gl_entries_for_credit()
 			make_gl_entries(gl_entries_for_credit, cancel)			
+		
+		elif self.expense_type=='Employee Petty Cash':
+			gl_entries_for_credit = self.get_gl_entries_for_credit()
+			make_gl_entries(gl_entries_for_credit, cancel)					
 
 	def get_gl_entries_for_credit(self):
 
@@ -228,10 +238,12 @@ class ExpenseEntry(AccountsController):
 	def validate_account_details_for_credit(self):
 		if not self.party_type:
 			frappe.throw(_("Please set party type"))
-		if self.party_type!='Supplier':
-				frappe.throw(_("Please set party type as Supplier"))			
-		if not self.party:
+		# if self.party_type!='Supplier':
+		# 		frappe.throw(_("Please set party type as Supplier"))			
+		if (self.party_type =='Supplier' and (not self.party)):
 			frappe.throw(_("Please set Supplier name"))
+		if (self.party_type =='Employee' and (not self.party)):
+			frappe.throw(_("Please set Employee name"))	
 
 		if not self.payable_account:
 			frappe.throw(_("Please set default payable account for the company {0}").format(getlink("Company",self.company)))
