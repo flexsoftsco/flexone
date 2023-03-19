@@ -69,6 +69,7 @@ class ExpenseEntry(AccountsController):
 		self.set_status()
 
 	def on_cancel(self):
+		self.ignore_linked_doctypes = ["GL Entry"]
 		self.make_gl_entries(cancel=True)
 		self.set_status()
 
